@@ -34,7 +34,7 @@ const Upload = () => {
       });
 
       const response = await axios.post(
-        "http://18.118.143.69:5000/upload",
+        "https://pictora-ai-api-1.onrender.com/uplaod",
         formData
       );
 
