@@ -15,7 +15,7 @@ const Search = () => {
 
   useEffect(() => {
     axios
-      .get("https://pictora-ai-api-1.onrender.com/fetch-all-data")
+      .get("https://pictora-ai-api.vercel.app/fetch-all-data")
       .then((res) => {
         setMenuItems(res.data);
         setLoading(false);

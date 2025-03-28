@@ -37,7 +37,7 @@ const DynamicEventPhotos = () => {
 
   useEffect(() => {
     axios
-      .get("https://pictora-ai-api-1.onrender.com/fetch-all-data")
+      .get("https://pictora-ai-api.vercel.app/fetch-all-data")
       .then((res) => {
         setMenuItems(res.data);
         console.log("yes");
@@ -45,7 +45,7 @@ const DynamicEventPhotos = () => {
         setFetchDataLoader(true);
         axios
           .get(
-            "https://pictora-ai-api-1.onrender.com/fetch_category_wise_data/" +
+            "https://pictora-ai-api.vercel.app/fetch_category_wise_data/" +
               params.searchTerm
           )
           .then((res) => {
