@@ -34,7 +34,7 @@ const Upload = () => {
       });
 
       const response = await axios.post(
-        "https://pictora-ai-api.vercel.app/upload",
+        "http://localhost:5000/upload",
         formData
       );
 
