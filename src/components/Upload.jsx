@@ -34,7 +34,7 @@ const Upload = () => {
       });
 
       const response = await axios.post(
-        process.env.REACT_APP_API + "upload",
+        "http://18.118.143.69:5000/upload",
         formData
       );
 

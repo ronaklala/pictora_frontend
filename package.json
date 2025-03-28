@@ -2,6 +2,7 @@
   "name": "pictora.ai",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://18.118.143.69:5000",
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",

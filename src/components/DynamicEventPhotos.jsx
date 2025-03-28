@@ -36,8 +36,10 @@ const DynamicEventPhotos = () => {
   };
 
   useEffect(() => {
+    let api = "http://18.118.143.69:5000/";
+    console.log(api);
     axios
-      .get(process.env.REACT_APP_API + "fetch-all-data")
+      .get(api + "fetch-all-data")
       .then((res) => {
         setMenuItems(res.data);
         console.log("yes");

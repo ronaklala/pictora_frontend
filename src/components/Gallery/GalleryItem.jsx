@@ -10,7 +10,7 @@ function GalleryItem() {
 
   useEffect(() => {
     axios
-      .get(process.env.REACT_APP_API + "fetch_category_wise_data/Bhaiya")
+      .get("http://18.118.143.69:5000/fetch_category_wise_data/Bhaiya")
       .then((res) => {
         setResult(res.data);
         setFetchDataLoader(false);

@@ -15,7 +15,7 @@ const Search = () => {
 
   useEffect(() => {
     axios
-      .get(process.env.REACT_APP_API + "fetch-all-data")
+      .get("fetch-all-data")
       .then((res) => {
         setMenuItems(res.data);
         setLoading(false);
@@ -47,7 +47,7 @@ const Search = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        process.env.REACT_APP_API + "search",
+        "http://18.118.143.69:5000/search",
         formData
       );
       setResult(response.data.MatchedImages);
