@@ -1,0 +1,170 @@
+.container {
+  max-width: 100vw;
+  margin: auto;
+}
+
+.file-input {
+  margin-bottom: 10px;
+}
+
+.search-button {
+  width: 150px;
+  padding: 10px;
+  border: 2px solid #2d89b1;
+  border-radius: 10px;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
+hr {
+  border: 1px solid #d4d4d4;
+}
+.content {
+  margin-top: 25px;
+  width: 90vw;
+}
+.flex {
+  flex-direction: column;
+  max-width: 500px;
+  width: 80%;
+}
+
+.form {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-primary {
+  height: 45px;
+  padding: 10px;
+  width: auto;
+  border: none;
+  background-color: #2d89b1;
+  color: #fff;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.lg-sub-html {
+  opacity: 0 !important;
+}
+
+.search-button:hover {
+  background-color: #2d89b1;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.5s ease;
+}
+.active {
+  color: #3e659f !important;
+  font-weight: bold;
+  font-size: 16px !important;
+}
+a {
+  color: #a2a2a2 !important;
+  font-size: 15px;
+}
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.image-card {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(10px);
+  transition: filter 0.5s ease-in-out;
+}
+
+.gallery-image.loaded {
+  filter: blur(0);
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.view-button,
+.download-button {
+  background-color: #28a745;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.view-button:hover {
+  background-color: #218838;
+}
+
+.download-button {
+  background-color: #dc3545;
+}
+
+.download-button:hover {
+  background-color: #c82333;
+}
+
+.lg-react-element {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+}
+.lg-react-element > div {
+  width: 100vw;
+}
+.input {
+  height: 45px;
+  width: 180px;
+  border: 1px solid #2d89b1;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  outline: none;
+  font-size: 18px;
+}
+
+.lg-react-element {
+  width: 100vw;
+}
+
+.lg-react-element a {
+  display: inline-block;
+  overflow: hidden;
+}
+
+.lg-react-element img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.search_section {
+  padding: 20px;
+}
+
+.menu {
+  margin-top: 15px;
+}
