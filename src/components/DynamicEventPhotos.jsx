@@ -79,17 +79,30 @@ const DynamicEventPhotos = () => {
       });
   }, []);
 
-  const handleDownload = ({ slide, saveAs }) => {
-    const file = slide.ImageURL.replace(
+  const handleDownload = async ({ slide }) => {
+    const fileURL = slide.ImageURL.replace(
       "s3://rekognition3103/",
       "https://d1wfnbu1ueq29p.cloudfront.net/"
     );
-    const a = document.createElement("a");
-    a.href = file;
-    a.download = file; // Suggested filename for the download
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+
+    try {
+      const response = await fetch(fileURL);
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "image.jpg"; // Default filename
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      // Cleanup
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+      alert("Failed to download image.");
+    }
   };
 
   return (
