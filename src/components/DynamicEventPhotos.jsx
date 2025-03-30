@@ -42,7 +42,7 @@ const DynamicEventPhotos = () => {
 
         axios
           .get(
-            "https://pictora-ai-api.vercel.app/fetch_category_wise_data/" +
+            "http://localhost:5000/fetch_category_wise_data/" +
               params.searchTerm
           )
           .then((res) => {
@@ -153,6 +153,7 @@ const DynamicEventPhotos = () => {
               </>
             ) : (
               <>
+                <p>Total Photos Found: {result.length}</p>
                 <br /> <br />
                 <Masonry columns={{ 640: 2, 768: 2, 1024: 3, 1280: 3 }} gap={1}>
                   {result.map((item, i) => (
