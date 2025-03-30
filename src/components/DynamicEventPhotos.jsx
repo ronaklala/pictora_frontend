@@ -80,9 +80,9 @@ const DynamicEventPhotos = () => {
   }, []);
 
   const handleDownload = async ({ slide }) => {
-    const fileURL = slide.ImageURL.replace(
+    const fileURL = slide.WebPImageURL.replace(
       "s3://rekognition3103/",
-      "https://d1wfnbu1ueq29p.cloudfront.net/"
+      "https://rekognition3103.s3.us-east-2.amazonaws.com/"
     );
 
     try {
