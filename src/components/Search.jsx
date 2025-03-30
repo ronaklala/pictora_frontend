@@ -47,7 +47,7 @@ const Search = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "https://pictora-ai-api.vercel.app/search",
+        "http://pictora-ai-api.vercel.app/search",
         formData
       );
       setResult(response.data.MatchedImages);

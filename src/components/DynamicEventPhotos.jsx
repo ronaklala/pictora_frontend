@@ -31,10 +31,6 @@ const DynamicEventPhotos = () => {
 
   const params = useParams();
 
-  const onInit = () => {
-    console.log("lightGallery has been initialized");
-  };
-
   useEffect(() => {
     axios
       .get("https://pictora-ai-api.vercel.app/fetch-all-data")
@@ -43,25 +39,35 @@ const DynamicEventPhotos = () => {
         console.log("yes");
         setLoading(false);
         setFetchDataLoader(true);
+
         axios
           .get(
             "https://pictora-ai-api.vercel.app/fetch_category_wise_data/" +
               params.searchTerm
           )
           .then((res) => {
-            const formattedData = res.data.map((item) => ({
-              ...item,
-              src: item.WebPImageURL.replace(
-                "s3://rekognition3103/",
-                "https://rekognition3103.s3.us-east-2.amazonaws.com/"
-              ),
-              href: item.WebPImageURL.replace(
-                "s3://rekognition3103/",
-                "https://rekognition3103.s3.us-east-2.amazonaws.com/"
-              ),
-            }));
+            setResult((prevResult) => {
+              const existingUrls = new Set(
+                prevResult.map((item) => item.WebPImageURL)
+              );
 
-            setResult(formattedData);
+              const formattedData = res.data
+                .map((item) => ({
+                  ...item,
+                  src: item.WebPImageURL.replace(
+                    "s3://rekognition3103/",
+                    "https://d1wfnbu1ueq29p.cloudfront.net/"
+                  ),
+                  download: item.WebPImageURL.replace(
+                    "s3://rekognition3103/",
+                    "https://d1wfnbu1ueq29p.cloudfront.net/"
+                  ),
+                }))
+                .filter((item) => !existingUrls.has(item.WebPImageURL)); // Filter out duplicates
+
+              return [...prevResult, ...formattedData]; // Update state with new unique images
+            });
+
             setFetchDataLoader(false);
           })
           .catch((err) => {
@@ -72,6 +78,19 @@ const DynamicEventPhotos = () => {
         console.log(err);
       });
   }, []);
+
+  const handleDownload = ({ slide, saveAs }) => {
+    const file = slide.ImageURL.replace(
+      "s3://rekognition3103/",
+      "https://d1wfnbu1ueq29p.cloudfront.net/"
+    );
+    const a = document.createElement("a");
+    a.href = file;
+    a.download = file; // Suggested filename for the download
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
 
   return (
     <div className="container">
@@ -122,7 +141,7 @@ const DynamicEventPhotos = () => {
             ) : (
               <>
                 <br /> <br />
-                <Masonry columns={{ 640: 1, 768: 2, 1024: 3, 1280: 3 }} gap={1}>
+                <Masonry columns={{ 640: 2, 768: 2, 1024: 3, 1280: 3 }} gap={1}>
                   {result.map((item, i) => (
                     <LazyLoadImage
                       effect="blur"
@@ -132,7 +151,11 @@ const DynamicEventPhotos = () => {
                       }}
                       src={item.LowResImageURL.replace(
                         "s3://rekognition3103/",
-                        "https://rekognition3103.s3.us-east-2.amazonaws.com/"
+                        "https://d1wfnbu1ueq29p.cloudfront.net/"
+                      )}
+                      download={item.LowResImageURL.replace(
+                        "s3://rekognition3103/",
+                        "https://d1wfnbu1ueq29p.cloudfront.net/"
                       )}
                       style={{ width: "100%" }}
                       onClick={() => {
@@ -147,6 +170,9 @@ const DynamicEventPhotos = () => {
                   close={() => setOpen(false)}
                   slides={result}
                   index={idx}
+                  download={{
+                    download: handleDownload, // Custom download function
+                  }}
                   plugins={[
                     Captions,
                     Fullscreen,

@@ -35,6 +35,19 @@ function Gallery({ images, menuItems }) {
   };
   let filteredImages = filterImagesByCategory(images, selectedCategory);
 
+  const handleDownload = ({ slide, saveAs }) => {
+    const file = slide.ImageURL.replace(
+      "s3://rekognition3103/",
+      "https://d1wfnbu1ueq29p.cloudfront.net/"
+    );
+    const a = document.createElement("a");
+    a.href = file;
+    a.download = file; // Suggested filename for the download
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   return (
     <div className="gallery-grid">
       <center>
@@ -57,7 +70,7 @@ function Gallery({ images, menuItems }) {
         <br />
       </center>
 
-      <Masonry columns={{ 640: 1, 768: 2, 1024: 3, 1280: 3 }} gap={1}>
+      <Masonry columns={{ 640: 2, 768: 2, 1024: 3, 1280: 3 }} gap={1}>
         {filteredImages.map((item, i) => (
           <LazyLoadImage
             effect="blur"
@@ -67,7 +80,7 @@ function Gallery({ images, menuItems }) {
             }}
             src={item.LowResImageURL.replace(
               "s3://rekognition3103/",
-              "https://rekognition3103.s3.us-east-2.amazonaws.com/"
+              "https://d1wfnbu1ueq29p.cloudfront.net/"
             )}
             style={{ width: "100%" }}
             onClick={() => {
@@ -84,13 +97,12 @@ function Gallery({ images, menuItems }) {
           ...item,
           src: item.WebPImageURL.replace(
             "s3://rekognition3103/",
-            "https://rekognition3103.s3.us-east-2.amazonaws.com/"
-          ),
-          href: item.WebPImageURL.replace(
-            "s3://rekognition3103/",
-            "https://rekognition3103.s3.us-east-2.amazonaws.com/"
+            "https://d1wfnbu1ueq29p.cloudfront.net/"
           ),
         }))}
+        download={{
+          download: handleDownload, // Custom download function
+        }}
         index={idx}
         plugins={[
           Captions,

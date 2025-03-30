@@ -15,6 +15,7 @@
     "masonry-layout": "^4.2.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-layout-masonry": "^1.2.0",
     "react-lazy-load-image-component": "^1.6.3",
     "react-photo-album": "^3.0.2",
