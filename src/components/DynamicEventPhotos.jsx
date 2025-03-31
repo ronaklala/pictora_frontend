@@ -184,10 +184,6 @@ const DynamicEventPhotos = () => {
                           "s3://rekognition3103/",
                           "https://d1wfnbu1ueq29p.cloudfront.net/"
                         )}
-                        download={item.LowResImageURL.replace(
-                          "s3://rekognition3103/",
-                          "https://d1wfnbu1ueq29p.cloudfront.net/"
-                        )}
                         style={{ width: "100%" }}
                         onClick={() => {
                           setOpen(true);

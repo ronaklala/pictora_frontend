@@ -14,6 +14,7 @@ const Search = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [fullScreenLoader, setFullScreenLoader] = useState(false);
+  const [idx, setIdx] = React.useState(0);
 
   useEffect(() => {
     axios
@@ -30,6 +31,14 @@ const Search = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (file.size > 2.5 * 1024 * 1024) {
+        // 2.5 MB in bytes
+        alert("Image file size should be less than 2.5 MB or click a selfie.");
+        setSelectedFileName(""); // Reset selected file name
+        setImage(null); // Reset image state
+        return;
+      }
+
       setImage(file);
       setSelectedFileName(file.name); // Set the selected file name
     } else {
@@ -52,7 +61,32 @@ const Search = () => {
         "https://pictora-ai-api.vercel.app/search",
         formData
       );
-      setResult(response.data.MatchedImages);
+      setResult((prevResult) => {
+        const existingUrls = new Set(
+          prevResult.map((item) => item.WebPImageURL)
+        );
+        console.log(response);
+
+        const formattedData = response.data.MatchedImages.map((item) => ({
+          ...item,
+          src: item.WebPImageURL.replace(
+            "s3://rekognition3103/",
+            "https://d1wfnbu1ueq29p.cloudfront.net/"
+          ),
+          download: item.WebPImageURL.replace(
+            "s3://rekognition3103/",
+            "https://d1wfnbu1ueq29p.cloudfront.net/"
+          ),
+        })).filter((item) => !existingUrls.has(item.WebPImageURL)); // Remove duplicates
+
+        // Merge new images with previous results and sort alphabetically by 'src'
+        const sortedResult = [...prevResult, ...formattedData].sort((a, b) =>
+          a.src.localeCompare(b.src)
+        );
+
+        return sortedResult;
+      });
+
       setImagesLoaded(true);
     } catch (error) {
       alert(error.response?.data?.Message || "Error occurred while searching.");
@@ -156,6 +190,8 @@ const Search = () => {
                   images={result}
                   menuItems={menuItems}
                   setFullScreenLoader={setFullScreenLoader}
+                  setIdx={setIdx}
+                  idx={idx}
                 />
               )}
             </div>

@@ -17,10 +17,9 @@ import "yet-another-react-lightbox/plugins/captions.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import { Download } from "yet-another-react-lightbox/plugins";
 
-function Gallery({ images, menuItems, setFullScreenLoader }) {
+function Gallery({ images, menuItems, setFullScreenLoader, setIdx, idx }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [open, setOpen] = React.useState(false);
-  const [idx, setIdx] = React.useState(0);
 
   const filterImagesByCategory = (images, categoryName) => {
     if (categoryName === "All") {
@@ -36,6 +35,8 @@ function Gallery({ images, menuItems, setFullScreenLoader }) {
       "s3://rekognition3103/",
       "https://d1wfnbu1ueq29p.cloudfront.net/"
     );
+
+    console.log(idx);
 
     try {
       const response = await fetch(fileURL);
@@ -110,17 +111,11 @@ function Gallery({ images, menuItems, setFullScreenLoader }) {
       <Lightbox
         open={open}
         close={() => setOpen(false)}
-        slides={filteredImages.map((item) => ({
-          ...item,
-          src: item.WebPImageURL.replace(
-            "s3://rekognition3103/",
-            "https://d1wfnbu1ueq29p.cloudfront.net/"
-          ),
-        }))}
+        slides={filteredImages}
+        index={idx}
         download={{
           download: handleDownload, // Custom download function
         }}
-        index={idx}
         plugins={[
           Captions,
           Fullscreen,
