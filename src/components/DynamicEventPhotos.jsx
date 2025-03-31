@@ -181,12 +181,10 @@ const DynamicEventPhotos = () => {
     URL.revokeObjectURL(url);
   };
 
-  // Add a hidden button for triggering share inside user gesture
-  document.body.innerHTML += `<button id="downloadButton" style="display: none;"></button>`;
-
   return (
     <div className="container">
       {fullScreenLoader ? <FullScreenLoader /> : <></>}
+      <button id="downloadButton" style={{ display: "none" }}></button>
       <Header />
 
       <div className="search_section">
