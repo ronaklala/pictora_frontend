@@ -98,9 +98,13 @@ const DynamicEventPhotos = () => {
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
 
+      // Extract the filename from the URL
+      const urlParts = fileURL.split("/");
+      const originalFileName = urlParts[urlParts.length - 1]; // Get the last part of the URL
+
       const a = document.createElement("a");
       a.href = url;
-      a.download = "image.jpg"; // Default filename
+      a.download = originalFileName; // Set the original filename
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -110,8 +114,8 @@ const DynamicEventPhotos = () => {
       setFullScreenLoader(false);
     } catch (error) {
       console.error("Error downloading file:", error);
-      setFullScreenLoader(false);
       alert("Failed to download image.");
+      setFullScreenLoader(false);
     }
   };
 

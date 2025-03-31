@@ -4,6 +4,7 @@ import "../styles/Search.css";
 import Gallery from "./Gallery/Gallery";
 import { ScaleLoader } from "react-spinners";
 import Header from "./shared/Header";
+import FullScreenLoader from "./FullScreenLoader";
 
 const Search = () => {
   const [image, setImage] = useState(null);
@@ -12,6 +13,7 @@ const Search = () => {
   const [loading, setLoading] = useState(true);
   const [menuItems, setMenuItems] = useState([]);
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [fullScreenLoader, setFullScreenLoader] = useState(false);
 
   useEffect(() => {
     axios
@@ -63,6 +65,7 @@ const Search = () => {
   return (
     <div className="container">
       <Header />
+      {fullScreenLoader && <FullScreenLoader />}
 
       <div className="search_section">
         <h2>Welcome to RishTa's Wedding Pictures</h2>
@@ -149,7 +152,11 @@ const Search = () => {
               </div>
 
               {!loading && imagesLoaded && (
-                <Gallery images={result} menuItems={menuItems} />
+                <Gallery
+                  images={result}
+                  menuItems={menuItems}
+                  setFullScreenLoader={setFullScreenLoader}
+                />
               )}
             </div>
           </>

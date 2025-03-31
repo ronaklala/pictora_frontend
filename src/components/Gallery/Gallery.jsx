@@ -16,13 +16,12 @@ import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/plugins/captions.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import { Download } from "yet-another-react-lightbox/plugins";
-import FullScreenLoader from "../FullScreenLoader";
 
-function Gallery({ images, menuItems }) {
+function Gallery({ images, menuItems, setFullScreenLoader }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [open, setOpen] = React.useState(false);
   const [idx, setIdx] = React.useState(0);
-  const [fullScreenLoader, setFullScreenLoader] = useState(false);
+
   const filterImagesByCategory = (images, categoryName) => {
     if (categoryName === "All") {
       return images; // Return all images if "All" is selected
@@ -43,9 +42,13 @@ function Gallery({ images, menuItems }) {
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
 
+      // Extract the filename from the URL
+      const urlParts = fileURL.split("/");
+      const originalFileName = urlParts[urlParts.length - 1]; // Get the last part of the URL
+
       const a = document.createElement("a");
       a.href = url;
-      a.download = "image.jpg"; // Default filename
+      a.download = originalFileName; // Set the original filename
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -62,7 +65,6 @@ function Gallery({ images, menuItems }) {
 
   return (
     <div className="gallery-grid">
-      {fullScreenLoader && <FullScreenLoader />}
       <center>
         <h1>Find Your Face Matching Images Below</h1>
         <h4>Please Select a particular Event if you want to view</h4>
