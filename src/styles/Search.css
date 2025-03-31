@@ -45,6 +45,7 @@ hr {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 99vw;
 }
 
 .button-primary {
@@ -91,6 +92,14 @@ hr {
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-grid {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 98vw;
 }
 
 .gallery-image {

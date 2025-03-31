@@ -47,6 +47,7 @@ const Search = () => {
   };
 
   const handleSearch = async () => {
+    setResult([]);
     if (!image) {
       alert("Please upload an image first!");
       return;
@@ -88,8 +89,6 @@ const Search = () => {
       });
 
       setImagesLoaded(true);
-      setImage(null);
-      setSelectedFileName(""); // Reset selected file name
     } catch (error) {
       alert(error.response?.data?.Message || "Error occurred while searching.");
       setResult([]);

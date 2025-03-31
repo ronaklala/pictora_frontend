@@ -93,7 +93,7 @@ function Gallery({ images, menuItems, setFullScreenLoader, setIdx, idx }) {
         <br />
       </center>
 
-      <Masonry columns={{ 640: 2, 768: 2, 1024: 3, 1280: 3 }} gap={1}>
+      <Masonry columns={{ 640: 2, 768: 2, 1024: 3, 1280: 4 }} gap={1}>
         {filteredImages.map((item, i) => (
           <>
             <LazyLoadImage
