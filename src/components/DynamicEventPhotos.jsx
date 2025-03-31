@@ -88,7 +88,7 @@ const DynamicEventPhotos = () => {
 
   const handleDownload = async ({ slide }) => {
     setFullScreenLoader(true);
-    const fileURL = slide.WebPImageURL.replace(
+    const fileURL = slide.ImageURL.replace(
       "s3://rekognition3103/",
       "https://d1wfnbu1ueq29p.cloudfront.net/"
     );
@@ -164,6 +164,7 @@ const DynamicEventPhotos = () => {
               </>
             ) : (
               <>
+                <br />
                 <p>Total Photos Found: {result.length}</p>
                 <br /> <br />
                 <Masonry columns={{ 640: 2, 768: 2, 1024: 3, 1280: 3 }} gap={1}>

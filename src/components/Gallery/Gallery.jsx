@@ -16,11 +16,13 @@ import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/plugins/captions.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import { Download } from "yet-another-react-lightbox/plugins";
+import FullScreenLoader from "../FullScreenLoader";
 
 function Gallery({ images, menuItems }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [open, setOpen] = React.useState(false);
   const [idx, setIdx] = React.useState(0);
+  const [fullScreenLoader, setFullScreenLoader] = useState(false);
   const filterImagesByCategory = (images, categoryName) => {
     if (categoryName === "All") {
       return images; // Return all images if "All" is selected
@@ -30,7 +32,8 @@ function Gallery({ images, menuItems }) {
   let filteredImages = filterImagesByCategory(images, selectedCategory);
 
   const handleDownload = async ({ slide }) => {
-    const fileURL = slide.WebPImageURL.replace(
+    setFullScreenLoader(true);
+    const fileURL = slide.ImageURL.replace(
       "s3://rekognition3103/",
       "https://d1wfnbu1ueq29p.cloudfront.net/"
     );
@@ -49,14 +52,17 @@ function Gallery({ images, menuItems }) {
 
       // Cleanup
       URL.revokeObjectURL(url);
+      setFullScreenLoader(false);
     } catch (error) {
       console.error("Error downloading file:", error);
       alert("Failed to download image.");
+      setFullScreenLoader(false);
     }
   };
 
   return (
     <div className="gallery-grid">
+      {fullScreenLoader && <FullScreenLoader />}
       <center>
         <h1>Find Your Face Matching Images Below</h1>
         <h4>Please Select a particular Event if you want to view</h4>
