@@ -141,9 +141,10 @@ function Gallery({ images, menuItems, setFullScreenLoader, setIdx, idx }) {
               <img
                 src={slide.src}
                 style={{
-                  width: "100%",
+                  width: "80%",
                   height: "auto",
-                  touchAction: "manipulation", // Ensures zoom + long press work
+                  touchAction: "manipulation",
+                  maxHeight: "80vh", // Ensures zoom + long press work
                 }}
                 alt="Lightbox Image"
               />

@@ -171,7 +171,7 @@ const DynamicEventPhotos = () => {
                 <br />
                 <p>Total Photos Found: {result.length}</p>
                 <br /> <br />
-                <Masonry columns={{ 640: 2, 768: 2, 1024: 3, 1280: 3 }} gap={1}>
+                <Masonry columns={{ 640: 2, 768: 2, 1024: 3, 1280: 4 }} gap={1}>
                   {result.map((item, i) => (
                     <LazyLoadImage
                       effect="blur"
