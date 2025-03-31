@@ -88,6 +88,8 @@ const Search = () => {
       });
 
       setImagesLoaded(true);
+      setImage(null);
+      setSelectedFileName(""); // Reset selected file name
     } catch (error) {
       alert(error.response?.data?.Message || "Error occurred while searching.");
       setResult([]);
@@ -119,7 +121,6 @@ const Search = () => {
               </a>
               {menuItems.map((m, i) => (
                 <>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{" "}
                   <a key={i} href={`/search/${m}`} className="ml-4">
                     <span>{m}</span>
                   </a>

@@ -145,7 +145,6 @@ const DynamicEventPhotos = () => {
               </a>
               {menuItems.map((m, i) => (
                 <>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   {params.searchTerm === m ? (
                     <a href={"/search/" + m} className="active">
                       <span>{m}</span>
