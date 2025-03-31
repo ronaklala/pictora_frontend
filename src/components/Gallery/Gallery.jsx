@@ -31,30 +31,37 @@ function Gallery({ images, menuItems, setFullScreenLoader, setIdx, idx }) {
 
   const handleDownload = async ({ slide }) => {
     setFullScreenLoader(true);
-    const fileURL = slide.ImageURL.replace(
+
+    // Ensure slide comes from the filtered images
+    const currentImage = filteredImages.find(
+      (img) => img.ImageURL === slide.ImageURL
+    );
+    if (!currentImage) {
+      alert("Error finding image to download.");
+      setFullScreenLoader(false);
+      return;
+    }
+
+    const fileURL = currentImage.ImageURL.replace(
       "s3://rekognition3103/",
       "https://d1wfnbu1ueq29p.cloudfront.net/"
     );
-
-    console.log(idx);
 
     try {
       const response = await fetch(fileURL);
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
 
-      // Extract the filename from the URL
       const urlParts = fileURL.split("/");
-      const originalFileName = urlParts[urlParts.length - 1]; // Get the last part of the URL
+      const originalFileName = urlParts[urlParts.length - 1];
 
       const a = document.createElement("a");
       a.href = url;
-      a.download = originalFileName; // Set the original filename
+      a.download = originalFileName;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
 
-      // Cleanup
       URL.revokeObjectURL(url);
       setFullScreenLoader(false);
     } catch (error) {
@@ -112,9 +119,12 @@ function Gallery({ images, menuItems, setFullScreenLoader, setIdx, idx }) {
         open={open}
         close={() => setOpen(false)}
         slides={filteredImages}
-        index={idx}
+        index={Math.min(idx, filteredImages.length - 1)}
         download={{
           download: handleDownload, // Custom download function
+        }}
+        on={{
+          view: ({ index }) => setIdx(index), // Keep track of lightbox index
         }}
         plugins={[
           Captions,

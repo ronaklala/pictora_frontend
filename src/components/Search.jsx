@@ -98,8 +98,8 @@ const Search = () => {
 
   return (
     <div className="container">
+      {fullScreenLoader ? <FullScreenLoader /> : <></>}
       <Header />
-      {fullScreenLoader && <FullScreenLoader />}
 
       <div className="search_section">
         <h2>Welcome to RishTa's Wedding Pictures</h2>
