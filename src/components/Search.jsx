@@ -36,8 +36,17 @@ const Search = () => {
       return;
     }
 
-    // Ensure iOS selects the image by creating an object URL
-    const imageUrl = URL.createObjectURL(file);
+    // Check if it's an iOS device
+    const isIOS =
+      /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+    if (isIOS) {
+      // Manually trigger the selection event after a delay (iOS quirk)
+      setTimeout(() => {
+        const newEvent = new Event("change", { bubbles: true });
+        e.target.dispatchEvent(newEvent);
+      }, 500);
+    }
 
     if (file.size > 2.5 * 1024 * 1024) {
       alert("Image file size should be less than 2.5 MB or click a selfie.");
@@ -46,9 +55,7 @@ const Search = () => {
       return;
     }
 
-    // Force re-render by resetting the file input
-    e.target.value = "";
-
+    // Ensure iOS Safari processes the selected file properly
     setImage(file);
     setSelectedFileName(file.name);
   };
