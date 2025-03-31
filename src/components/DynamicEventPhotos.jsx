@@ -56,11 +56,11 @@ const DynamicEventPhotos = () => {
               const formattedData = res.data.data
                 .map((item) => ({
                   ...item,
-                  src: item.WebPImageURL.replace(
+                  src: item.ImageURL.replace(
                     "s3://rekognition3103/",
                     "https://d1wfnbu1ueq29p.cloudfront.net/"
                   ),
-                  download: item.WebPImageURL.replace(
+                  download: item.ImageURL.replace(
                     "s3://rekognition3103/",
                     "https://d1wfnbu1ueq29p.cloudfront.net/"
                   ),
@@ -196,7 +196,7 @@ const DynamicEventPhotos = () => {
                   slides={result}
                   index={idx}
                   download={{
-                    download: handleDownload, // Custom download function
+                    download: handleDownload,
                   }}
                   plugins={[
                     Captions,
@@ -207,24 +207,13 @@ const DynamicEventPhotos = () => {
                     Zoom,
                     Download,
                   ]}
-                  render={{
-                    slide: ({ slide }) => (
-                      <div
-                        style={{ position: "relative", textAlign: "center" }}
-                      >
-                        <img
-                          src={slide.src}
-                          alt="Preview"
-                          style={{
-                            maxWidth: "100%",
-                            maxHeight: "90vh",
-                            pointerEvents: "auto",
-                            userSelect: "auto",
-                            webkitUserSelect: "auto",
-                          }}
-                        />
-                      </div>
-                    ),
+                  styles={{
+                    container: {
+                      pointerEvents: "auto", // Allows iOS long-press
+                      userSelect: "auto",
+                      webkitUserSelect: "auto",
+                      touchAction: "auto", // Ensures zoom gestures work
+                    },
                   }}
                 />
               </>
