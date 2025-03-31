@@ -30,20 +30,27 @@ const Search = () => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      if (file.size > 2.5 * 1024 * 1024) {
-        // 2.5 MB in bytes
-        alert("Image file size should be less than 2.5 MB or click a selfie.");
-        setSelectedFileName(""); // Reset selected file name
-        setImage(null); // Reset image state
-        return;
-      }
 
-      setImage(file);
-      setSelectedFileName(file.name); // Set the selected file name
-    } else {
-      setSelectedFileName(""); // Reset if no file selected
+    if (!file) {
+      setSelectedFileName("");
+      return;
     }
+
+    // Ensure iOS selects the image by creating an object URL
+    const imageUrl = URL.createObjectURL(file);
+
+    if (file.size > 2.5 * 1024 * 1024) {
+      alert("Image file size should be less than 2.5 MB or click a selfie.");
+      setSelectedFileName("");
+      setImage(null);
+      return;
+    }
+
+    // Force re-render by resetting the file input
+    e.target.value = "";
+
+    setImage(file);
+    setSelectedFileName(file.name);
   };
 
   const handleSearch = async () => {
