@@ -88,7 +88,7 @@ const DynamicEventPhotos = () => {
 
   const handleDownload = async ({ slide }) => {
     setFullScreenLoader(true);
-    const fileURL = slide.ImageURL.replace(
+    const fileURL = slide.WebPImageURL.replace(
       "s3://rekognition3103/",
       "https://d1wfnbu1ueq29p.cloudfront.net/"
     );
@@ -196,7 +196,7 @@ const DynamicEventPhotos = () => {
                   slides={result}
                   index={idx}
                   download={{
-                    download: handleDownload,
+                    download: handleDownload, // Custom download function
                   }}
                   plugins={[
                     Captions,
@@ -209,11 +209,43 @@ const DynamicEventPhotos = () => {
                   ]}
                   styles={{
                     container: {
-                      pointerEvents: "auto", // Allows iOS long-press
+                      pointerEvents: "auto", // Enables long press
                       userSelect: "auto",
                       webkitUserSelect: "auto",
-                      touchAction: "auto", // Ensures zoom gestures work
+                      touchAction: "manipulation", // Allows both pinch-to-zoom and long press
                     },
+                  }}
+                  render={{
+                    slide: ({ slide }) => (
+                      <div style={{ position: "relative" }}>
+                        <img
+                          src={slide.src}
+                          style={{
+                            width: "100%",
+                            height: "auto",
+                            touchAction: "manipulation", // Ensures zoom + long press work
+                          }}
+                          alt="Lightbox Image"
+                        />
+                        {/* Download Button for iOS */}
+                        <a
+                          href={slide.src}
+                          download
+                          style={{
+                            position: "absolute",
+                            bottom: "10px",
+                            right: "10px",
+                            background: "rgba(0,0,0,0.5)",
+                            color: "#fff",
+                            padding: "5px 10px",
+                            borderRadius: "5px",
+                            textDecoration: "none",
+                          }}
+                        >
+                          Download
+                        </a>
+                      </div>
+                    ),
                   }}
                 />
               </>
