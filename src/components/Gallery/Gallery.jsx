@@ -137,7 +137,14 @@ function Gallery({ images, menuItems, setFullScreenLoader, setIdx, idx }) {
         }}
         render={{
           slide: ({ slide }) => (
-            <div style={{ position: "relative" }}>
+            <div
+              style={{
+                position: "relative",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <img
                 src={slide.src}
                 style={{
