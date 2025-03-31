@@ -126,15 +126,30 @@ function Gallery({ images, menuItems, setFullScreenLoader, setIdx, idx }) {
         on={{
           view: ({ index }) => setIdx(index), // Keep track of lightbox index
         }}
-        plugins={[
-          Captions,
-          Fullscreen,
-          Slideshow,
-          Thumbnails,
-          Video,
-          Zoom,
-          Download,
-        ]}
+        plugins={[Captions, Fullscreen, Slideshow, Thumbnails, Video, Download]}
+        styles={{
+          container: {
+            pointerEvents: "auto", // Enables long press
+            userSelect: "auto",
+            webkitUserSelect: "auto",
+            touchAction: "manipulation", // Allows both pinch-to-zoom and long press
+          },
+        }}
+        render={{
+          slide: ({ slide }) => (
+            <div style={{ position: "relative" }}>
+              <img
+                src={slide.src}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  touchAction: "manipulation", // Ensures zoom + long press work
+                }}
+                alt="Lightbox Image"
+              />
+            </div>
+          ),
+        }}
       />
     </div>
   );

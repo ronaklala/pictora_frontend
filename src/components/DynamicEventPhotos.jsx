@@ -56,11 +56,11 @@ const DynamicEventPhotos = () => {
               const formattedData = res.data.data
                 .map((item) => ({
                   ...item,
-                  src: item.ImageURL.replace(
+                  src: item.WebPImageURL.replace(
                     "s3://rekognition3103/",
                     "https://d1wfnbu1ueq29p.cloudfront.net/"
                   ),
-                  download: item.ImageURL.replace(
+                  download: item.WebPImageURL.replace(
                     "s3://rekognition3103/",
                     "https://d1wfnbu1ueq29p.cloudfront.net/"
                   ),
@@ -204,7 +204,6 @@ const DynamicEventPhotos = () => {
                     Slideshow,
                     Thumbnails,
                     Video,
-                    Zoom,
                     Download,
                   ]}
                   styles={{
@@ -227,23 +226,6 @@ const DynamicEventPhotos = () => {
                           }}
                           alt="Lightbox Image"
                         />
-                        {/* Download Button for iOS */}
-                        <a
-                          href={slide.src}
-                          download
-                          style={{
-                            position: "absolute",
-                            bottom: "10px",
-                            right: "10px",
-                            background: "rgba(0,0,0,0.5)",
-                            color: "#fff",
-                            padding: "5px 10px",
-                            borderRadius: "5px",
-                            textDecoration: "none",
-                          }}
-                        >
-                          Download
-                        </a>
                       </div>
                     ),
                   }}
