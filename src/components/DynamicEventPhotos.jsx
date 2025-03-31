@@ -89,9 +89,7 @@ const DynamicEventPhotos = () => {
   const handleDownload = async ({ slide }) => {
     setFullScreenLoader(true);
 
-    const currentImage = filteredImages.find(
-      (img) => img.ImageURL === slide.ImageURL
-    );
+    const currentImage = result.find((img) => img.ImageURL === slide.ImageURL);
     if (!currentImage) {
       alert("Error finding image to download.");
       setFullScreenLoader(false);
