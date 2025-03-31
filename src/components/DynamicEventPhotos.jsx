@@ -173,24 +173,21 @@ const DynamicEventPhotos = () => {
                 <br /> <br />
                 <Masonry columns={{ 640: 2, 768: 2, 1024: 3, 1280: 3 }} gap={1}>
                   {result.map((item, i) => (
-                    <>
-                      <LazyLoadImage
-                        effect="blur"
-                        wrapperProps={{
-                          // If you need to, you can tweak the effect transition using the wrapper style.
-                          style: { transitionDelay: "1s" },
-                        }}
-                        src={item.LowResImageURL.replace(
-                          "s3://rekognition3103/",
-                          "https://d1wfnbu1ueq29p.cloudfront.net/"
-                        )}
-                        style={{ width: "100%" }}
-                        onClick={() => {
-                          setOpen(true);
-                          setIdx(i);
-                        }}
-                      />
-                    </>
+                    <LazyLoadImage
+                      effect="blur"
+                      wrapperProps={{
+                        style: { transitionDelay: "1s" },
+                      }}
+                      src={item.LowResImageURL.replace(
+                        "s3://rekognition3103/",
+                        "https://d1wfnbu1ueq29p.cloudfront.net/"
+                      )}
+                      style={{ width: "100%" }}
+                      onClick={() => {
+                        setOpen(true);
+                        setIdx(i);
+                      }}
+                    />
                   ))}
                 </Masonry>
                 <Lightbox
@@ -210,6 +207,25 @@ const DynamicEventPhotos = () => {
                     Zoom,
                     Download,
                   ]}
+                  render={{
+                    slide: ({ slide }) => (
+                      <div
+                        style={{ position: "relative", textAlign: "center" }}
+                      >
+                        <img
+                          src={slide.src}
+                          alt="Preview"
+                          style={{
+                            maxWidth: "100%",
+                            maxHeight: "90vh",
+                            pointerEvents: "auto",
+                            userSelect: "auto",
+                            webkitUserSelect: "auto",
+                          }}
+                        />
+                      </div>
+                    ),
+                  }}
                 />
               </>
             )}
