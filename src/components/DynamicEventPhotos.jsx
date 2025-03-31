@@ -20,6 +20,7 @@ import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/plugins/captions.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import { Download } from "yet-another-react-lightbox/plugins";
+import FullScreenLoader from "./FullScreenLoader";
 
 const DynamicEventPhotos = () => {
   const [result, setResult] = useState([]);
@@ -28,6 +29,7 @@ const DynamicEventPhotos = () => {
   const [fetchDataLoader, setFetchDataLoader] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [idx, setIdx] = React.useState(0);
+  const [fullScreenLoader, setFullScreenLoader] = useState(false);
 
   const params = useParams();
 
@@ -85,9 +87,10 @@ const DynamicEventPhotos = () => {
   }, []);
 
   const handleDownload = async ({ slide }) => {
-    const fileURL = slide.WebPImageURL.replace(
+    setFullScreenLoader(true);
+    const fileURL = slide.ImageURL.replace(
       "s3://rekognition3103/",
-      "https://rekognition3103.s3.us-east-2.amazonaws.com/"
+      "https://d1wfnbu1ueq29p.cloudfront.net/"
     );
 
     try {
@@ -104,14 +107,17 @@ const DynamicEventPhotos = () => {
 
       // Cleanup
       URL.revokeObjectURL(url);
+      setFullScreenLoader(false);
     } catch (error) {
       console.error("Error downloading file:", error);
+      setFullScreenLoader(false);
       alert("Failed to download image.");
     }
   };
 
   return (
     <div className="container">
+      {fullScreenLoader ? <FullScreenLoader /> : <></>}
       <Header />
 
       <div className="search_section">

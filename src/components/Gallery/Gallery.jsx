@@ -30,9 +30,9 @@ function Gallery({ images, menuItems }) {
   let filteredImages = filterImagesByCategory(images, selectedCategory);
 
   const handleDownload = async ({ slide }) => {
-    const fileURL = slide.WebPImageURL.replace(
+    const fileURL = slide.ImageURL.replace(
       "s3://rekognition3103/",
-      "https://rekognition3103.s3.us-east-2.amazonaws.com/"
+      "https://d1wfnbu1ueq29p.cloudfront.net/"
     );
 
     try {
