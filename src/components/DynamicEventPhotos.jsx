@@ -42,7 +42,7 @@ const DynamicEventPhotos = () => {
 
         axios
           .get(
-            "https://pictora-ai-api.vercel.app/fetch_category_wise_data/" +
+            "http://localhost:5000/fetch_category_wise_data/" +
               params.searchTerm
           )
           .then((res) => {
@@ -51,7 +51,7 @@ const DynamicEventPhotos = () => {
                 prevResult.map((item) => item.WebPImageURL)
               );
 
-              const formattedData = res.data
+              const formattedData = res.data.data
                 .map((item) => ({
                   ...item,
                   src: item.WebPImageURL.replace(
@@ -63,9 +63,14 @@ const DynamicEventPhotos = () => {
                     "https://d1wfnbu1ueq29p.cloudfront.net/"
                   ),
                 }))
-                .filter((item) => !existingUrls.has(item.WebPImageURL)); // Filter out duplicates
+                .filter((item) => !existingUrls.has(item.WebPImageURL)); // Remove duplicates
 
-              return [...prevResult, ...formattedData]; // Update state with new unique images
+              // Merge new images with previous results and sort alphabetically by 'src'
+              const sortedResult = [...prevResult, ...formattedData].sort(
+                (a, b) => a.src.localeCompare(b.src)
+              );
+
+              return sortedResult;
             });
 
             setFetchDataLoader(false);
@@ -157,26 +162,29 @@ const DynamicEventPhotos = () => {
                 <br /> <br />
                 <Masonry columns={{ 640: 2, 768: 2, 1024: 3, 1280: 3 }} gap={1}>
                   {result.map((item, i) => (
-                    <LazyLoadImage
-                      effect="blur"
-                      wrapperProps={{
-                        // If you need to, you can tweak the effect transition using the wrapper style.
-                        style: { transitionDelay: "1s" },
-                      }}
-                      src={item.LowResImageURL.replace(
-                        "s3://rekognition3103/",
-                        "https://d1wfnbu1ueq29p.cloudfront.net/"
-                      )}
-                      download={item.LowResImageURL.replace(
-                        "s3://rekognition3103/",
-                        "https://d1wfnbu1ueq29p.cloudfront.net/"
-                      )}
-                      style={{ width: "100%" }}
-                      onClick={() => {
-                        setOpen(true);
-                        setIdx(i);
-                      }}
-                    />
+                    <>
+                      <p>{item.ImageID}</p>
+                      <LazyLoadImage
+                        effect="blur"
+                        wrapperProps={{
+                          // If you need to, you can tweak the effect transition using the wrapper style.
+                          style: { transitionDelay: "1s" },
+                        }}
+                        src={item.LowResImageURL.replace(
+                          "s3://rekognition3103/",
+                          "https://d1wfnbu1ueq29p.cloudfront.net/"
+                        )}
+                        download={item.LowResImageURL.replace(
+                          "s3://rekognition3103/",
+                          "https://d1wfnbu1ueq29p.cloudfront.net/"
+                        )}
+                        style={{ width: "100%" }}
+                        onClick={() => {
+                          setOpen(true);
+                          setIdx(i);
+                        }}
+                      />
+                    </>
                   ))}
                 </Masonry>
                 <Lightbox

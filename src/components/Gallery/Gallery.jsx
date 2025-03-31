@@ -79,22 +79,24 @@ function Gallery({ images, menuItems }) {
 
       <Masonry columns={{ 640: 2, 768: 2, 1024: 3, 1280: 3 }} gap={1}>
         {filteredImages.map((item, i) => (
-          <LazyLoadImage
-            effect="blur"
-            wrapperProps={{
-              // If you need to, you can tweak the effect transition using the wrapper style.
-              style: { transitionDelay: "1s" },
-            }}
-            src={item.LowResImageURL.replace(
-              "s3://rekognition3103/",
-              "https://d1wfnbu1ueq29p.cloudfront.net/"
-            )}
-            style={{ width: "100%" }}
-            onClick={() => {
-              setOpen(true);
-              setIdx(i);
-            }}
-          />
+          <>
+            <LazyLoadImage
+              effect="blur"
+              wrapperProps={{
+                // If you need to, you can tweak the effect transition using the wrapper style.
+                style: { transitionDelay: "1s" },
+              }}
+              src={item.LowResImageURL.replace(
+                "s3://rekognition3103/",
+                "https://d1wfnbu1ueq29p.cloudfront.net/"
+              )}
+              style={{ width: "100%" }}
+              onClick={() => {
+                setOpen(true);
+                setIdx(i);
+              }}
+            />
+          </>
         ))}
       </Masonry>
       <Lightbox
