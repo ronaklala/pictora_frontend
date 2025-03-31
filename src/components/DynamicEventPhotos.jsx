@@ -88,79 +88,29 @@ const DynamicEventPhotos = () => {
 
   const handleDownload = async ({ slide }) => {
     setFullScreenLoader(true);
-
-    const currentImage = result.find((img) => img.ImageURL === slide.ImageURL);
-    if (!currentImage) {
-      alert("Error finding image to download.");
-      setFullScreenLoader(false);
-      return;
-    }
-
-    const fileURL = currentImage.ImageURL.replace(
+    const fileURL = slide.ImageURL.replace(
       "s3://rekognition3103/",
       "https://d1wfnbu1ueq29p.cloudfront.net/"
     );
 
     try {
       const response = await fetch(fileURL);
-      let blob = await response.blob();
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
 
-      // Remove metadata by redrawing the image on a canvas
-      const removeMetadata = async (blob) => {
-        return new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onload = function (event) {
-            const img = new Image();
-            img.onload = function () {
-              const canvas = document.createElement("canvas");
-              const ctx = canvas.getContext("2d");
-              canvas.width = img.width;
-              canvas.height = img.height;
-              ctx.drawImage(img, 0, 0);
-              canvas.toBlob(resolve, "image/jpeg", 1.0);
-            };
-            img.src = event.target.result;
-          };
-          reader.readAsDataURL(blob);
-        });
-      };
+      // Extract the filename from the URL
+      const urlParts = fileURL.split("/");
+      const originalFileName = urlParts[urlParts.length - 1]; // Get the last part of the URL
 
-      blob = await removeMetadata(blob); // Remove metadata
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = originalFileName; // Set the original filename
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
 
-      // Create a new file with today's timestamp
-      const fileName = `image_${Date.now()}.jpg`;
-      const file = new File([blob], fileName, { type: "image/jpeg" });
-
-      const isIOS =
-        /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
-      // Ensure share is called inside a direct user gesture
-      const shareFile = async () => {
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            files: [file],
-            title: "Download Image",
-            text: "Save this image to your gallery",
-          });
-          alert("Image saved successfully!");
-        } else {
-          downloadFile(blob, fileName);
-        }
-      };
-
-      // If iOS, open in a new tab (as iOS does not allow programmatic downloads)
-      if (isIOS) {
-        const newBlobURL = URL.createObjectURL(blob);
-        window.open(newBlobURL, "_blank");
-        alert("Long press the image and choose 'Save to Photos'.");
-      } else {
-        // Call inside a click event
-        document.getElementById("downloadButton").onclick = () => {
-          shareFile();
-        };
-        document.getElementById("downloadButton").click();
-      }
-
+      // Cleanup
+      URL.revokeObjectURL(url);
       setFullScreenLoader(false);
     } catch (error) {
       console.error("Error downloading file:", error);
@@ -169,22 +119,9 @@ const DynamicEventPhotos = () => {
     }
   };
 
-  // Function to handle fallback download
-  const downloadFile = (blob, fileName) => {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
   return (
     <div className="container">
       {fullScreenLoader ? <FullScreenLoader /> : <></>}
-      <button id="downloadButton" style={{ display: "none" }}></button>
       <Header />
 
       <div className="search_section">
