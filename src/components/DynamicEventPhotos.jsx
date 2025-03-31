@@ -42,7 +42,7 @@ const DynamicEventPhotos = () => {
 
         axios
           .get(
-            "http://localhost:5000/fetch_category_wise_data/" +
+            "https://pictora-ai-api.vercel.app/fetch_category_wise_data/" +
               params.searchTerm
           )
           .then((res) => {

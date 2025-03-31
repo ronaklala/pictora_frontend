@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import "../../styles/Search.css";
-import { ScaleLoader, SyncLoader } from "react-spinners";
-import { useParams } from "react-router-dom";
 import "lightgallery/css/lightgallery.css";
 import "lightgallery/css/lg-zoom.css";
 import "lightgallery/css/lg-thumbnail.css";
@@ -22,9 +19,6 @@ import { Download } from "yet-another-react-lightbox/plugins";
 
 function Gallery({ images, menuItems }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [result, setResult] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [fetchDataLoader, setFetchDataLoader] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [idx, setIdx] = React.useState(0);
   const filterImagesByCategory = (images, categoryName) => {
