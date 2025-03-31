@@ -102,11 +102,10 @@ const DynamicEventPhotos = () => {
     );
 
     try {
-      // Fetch image as Blob
       const response = await fetch(fileURL);
       let blob = await response.blob();
 
-      // Convert Blob to Image (Removes Metadata)
+      // Remove metadata by redrawing the image on a canvas
       const removeMetadata = async (blob) => {
         return new Promise((resolve) => {
           const reader = new FileReader();
@@ -118,7 +117,7 @@ const DynamicEventPhotos = () => {
               canvas.width = img.width;
               canvas.height = img.height;
               ctx.drawImage(img, 0, 0);
-              canvas.toBlob(resolve, "image/jpeg", 1.0); // Save as new Blob
+              canvas.toBlob(resolve, "image/jpeg", 1.0);
             };
             img.src = event.target.result;
           };
@@ -128,37 +127,38 @@ const DynamicEventPhotos = () => {
 
       blob = await removeMetadata(blob); // Remove metadata
 
-      // Create a new File object to update timestamp
-      const file = new File([blob], `image_${Date.now()}.jpg`, {
-        type: "image/jpeg",
-      });
+      // Create a new file with today's timestamp
+      const fileName = `image_${Date.now()}.jpg`;
+      const file = new File([blob], fileName, { type: "image/jpeg" });
 
       const isIOS =
         /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
+      // Ensure share is called inside a direct user gesture
+      const shareFile = async () => {
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            title: "Download Image",
+            text: "Save this image to your gallery",
+          });
+          alert("Image saved successfully!");
+        } else {
+          downloadFile(blob, fileName);
+        }
+      };
+
+      // If iOS, open in a new tab (as iOS does not allow programmatic downloads)
       if (isIOS) {
-        // Open in new tab for iOS
         const newBlobURL = URL.createObjectURL(blob);
         window.open(newBlobURL, "_blank");
         alert("Long press the image and choose 'Save to Photos'.");
-      } else if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        // Directly share on Android (Gallery)
-        await navigator.share({
-          files: [file],
-          title: "Download Image",
-          text: "Save this image to your gallery",
-        });
-        alert("Image saved successfully!");
       } else {
-        // Fallback: Direct download
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `image_${Date.now()}.jpg`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        // Call inside a click event
+        document.getElementById("downloadButton").onclick = () => {
+          shareFile();
+        };
+        document.getElementById("downloadButton").click();
       }
 
       setFullScreenLoader(false);
@@ -168,6 +168,21 @@ const DynamicEventPhotos = () => {
       setFullScreenLoader(false);
     }
   };
+
+  // Function to handle fallback download
+  const downloadFile = (blob, fileName) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  // Add a hidden button for triggering share inside user gesture
+  document.body.innerHTML += `<button id="downloadButton" style="display: none;"></button>`;
 
   return (
     <div className="container">
