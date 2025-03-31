@@ -88,7 +88,8 @@ const DynamicEventPhotos = () => {
 
   const handleDownload = async ({ slide }) => {
     setFullScreenLoader(true);
-    const fileURL = slide.WebPImageURL.replace(
+    console.log(slide);
+    const fileURL = slide.ImageURL.replace(
       "s3://rekognition3103/",
       "https://d1wfnbu1ueq29p.cloudfront.net/"
     );
@@ -215,13 +216,21 @@ const DynamicEventPhotos = () => {
                   }}
                   render={{
                     slide: ({ slide }) => (
-                      <div style={{ position: "relative" }}>
+                      <div
+                        style={{
+                          position: "relative",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
                         <img
                           src={slide.src}
                           style={{
-                            width: "100%",
+                            width: "80%",
                             height: "auto",
-                            touchAction: "manipulation", // Ensures zoom + long press work
+                            touchAction: "manipulation",
+                            maxHeight: "80vh", // Ensures zoom + long press work
                           }}
                           alt="Lightbox Image"
                         />
